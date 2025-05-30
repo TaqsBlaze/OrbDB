@@ -66,9 +66,6 @@ async function initialize() {
 initialize();
 ```
 
-## Documentation
-
-- Add detailed API documentation here.
 
 ## json Adapter
 
