@@ -1,6 +1,6 @@
 {
   "name": "orbdb",
-  "version": "1.1.8",
+  "version": "1.2.0",
   "description": "OrbDB is highly flexible, fast, light weight ORM suitable for prototyping whilst giving the flexibility of easly updating your database schema on the go to suit project chages and the flexibility to use a database of your choice",
   "main": "orb.js",
   "scripts": {
@@ -31,14 +31,11 @@
     "./schema": "./schema/schema.js",
     "./adapters/baseAdapter": "./adapters/baseAdapter.js",
     "./adapters/jsonAdapter": "./adapters/jsonAdapter.js",
-    "./adapters/sqliteAdapter": "./adapters/sqliteAdapter.js",
-    "./utils/hash": "./utility/hash.js",
-    "./utils/sanitizer": "./utility/sanitizer.js"
+    "./utils/hash": "./utils/hash.js",
+    "./utils/sanitizer": "./utils/sanitizer.js"
   },
   "dependencies": {
     "better-sqlite3": "^11.6.0",
-    "jest": "^29.7.0",
-    "sqlite": "^5.1.1",
-    "sqlite3": "^5.1.7"
+    "jest": "^29.7.0"
   }
 }

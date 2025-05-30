@@ -19,6 +19,15 @@ class JSONAdapter extends BaseAdapter {
     }
   }
 
+  async save(jsonData) {
+    try {
+      await fs.writeFile(this.dbPath, JSON.stringify(jsonData, null, 2));
+    } catch (error) {
+      console.error('Error saving JSON data:', error);
+      throw error;
+    }
+  }
+
   async insert(tableName, newData) {
 
   try {
@@ -50,7 +59,7 @@ class JSONAdapter extends BaseAdapter {
     jsonData['schema'][tableName].push(cleanData);
 
     // Write the updated data back to the file
-    await fs.writeFile(this.dbPath, JSON.stringify(jsonData, null, 2));
+    await this.save(jsonData);
     console.log(`Data successfully inserted into '${tableName}' table.`);
   } catch (err) {
     console.error('Error writing data:', err);
@@ -66,7 +75,7 @@ class JSONAdapter extends BaseAdapter {
       jsonData["schema"][tableName] = (jsonData["schema"][tableName] || []).map(item =>
         item.id === id ? { ...item, ...updatedData } : item
       );
-      await fs.writeFile(this.dbPath, JSON.stringify(jsonData, null, 2));
+      await this.save(jsonData);
     } catch (err) {
       console.error('Error updating data:', err);
       throw err;
@@ -78,7 +87,7 @@ class JSONAdapter extends BaseAdapter {
       const dbData = await fs.readFile(this.dbPath, 'utf8');
       const jsonData = JSON.parse(dbData);
       jsonData["schema"][tableName] = (jsonData["schema"][tableName] || []).filter(item => item.id !== id);
-      await fs.writeFile(this.dbPath, JSON.stringify(jsonData, null, 2));
+      await this.save(jsonData);
     } catch (err) {
       console.error('Error deleting data:', err);
       throw err;
@@ -92,7 +101,7 @@ class JSONAdapter extends BaseAdapter {
         properties: schema.properties || {},
         [schema.tableName]: []
       };
-      await fs.writeFile(this.dbPath, JSON.stringify({ schema: formattedSchema}, null, 2));
+      await this.save({ schema: formattedSchema });
       console.log('Schema created successfully.');
     } catch (err) {
       console.error('Error creating schema:', err);

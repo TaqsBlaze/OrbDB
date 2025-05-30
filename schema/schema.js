@@ -43,6 +43,20 @@ class OrbDBSchema {
             await this.OrbDB.createSchema({ tableName: model.name, ...schema });
         });
     }
+
+    validate(data) {
+        for (const model of this.models) {
+            for (const fieldName in model.fields) {
+                const field = model.fields[fieldName];
+                if (field.required && !(fieldName in data)) {
+                    throw new Error(`Missing required field: ${fieldName}`);
+                }
+                if (field.type && typeof data[fieldName] !== field.type) {
+                    throw new Error(`Invalid type for field ${fieldName}: expected ${field.type}`);
+                }
+            }
+        }
+    }
 }
 
 module.exports = OrbDBSchema;

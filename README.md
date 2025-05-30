@@ -7,19 +7,80 @@
 `npm i orbdb@latest`
 
 ----
+
+## Usage
+
+### JSON Adapter Example
+
+```javascript
+const OrbDB = require('orbdb');
+const OrbDBSchema = require('orbdb/schema');
+const adapter = require('orbdb/adapters/jsonAdapter');
+const path = require('path');
+
+// Initialize JSON Adapter
+const dbPath = path.join(__dirname, 'db.json');
+const jsonAdapter = new adapter(dbPath);
+const orbDB = new OrbDB.Json(jsonAdapter);
+const schemaInstance = new OrbDBSchema(orbDB);
+
+// Define a model
+const userModel = {
+    name: 'users',
+    fields: {
+        id: { type: 'number', required: true },
+        name: { type: 'string', required: true },
+        age: { type: 'number' }
+    }
+};
+
+async function initialize() {
+    // Add the model and create the schema
+    schemaInstance.addModel(userModel);
+    await schemaInstance.createSchema();
+
+    // Insert data
+    const newUser = { name: 'John Doe', age: 30 };
+    await orbDB.insert(userModel.name, newUser);
+
+    // Retrieve data
+    const users = await orbDB.get(userModel.name);
+    console.log('Users:', users);
+
+    // Update data
+    const updatedUser = { age: 31 };
+    await orbDB.update(userModel.name, 1, updatedUser);
+
+    // Retrieve updated data
+    const updatedUsers = await orbDB.get(userModel.name);
+    console.log('Updated Users:', updatedUsers);
+
+    // Delete data
+    await orbDB.delete(userModel.name, 1);
+
+    // Retrieve data after deletion
+    const remainingUsers = await orbDB.get(userModel.name);
+    console.log('Remaining Users:', remainingUsers);
+}
+
+initialize();
+```
+
+## Documentation
+
+- Add detailed API documentation here.
+
 ## json Adapter
 
 ### How to us
 
-
-```
-const OrbDB = require('orb'); 
-const OrbDBSchema = require('orb/schema');
-const fs = require('fs').promises;
+```javascript
+const OrbDB = require('orbdb'); 
+const OrbDBSchema = require('orbdb/schema');
 const path = require('path');
 
 // Define JSON Adapter
-const adapter = require('orb/adapters/jsonAdapter');
+const adapter = require('orbdb/adapters/jsonAdapter');
 const dbPath = path.join(__dirname, './db.json');
 
 let orbDB;
@@ -51,9 +112,6 @@ init();
 const newUser = { id: 1, name: 'John Doe', age: 30 };
 orbDB.insert(userModel.name, newUser);
 
-const dbData = await fs.readFile(dbPath, 'utf8');
-const jsonData = JSON.parse(dbData);
-
 // Fetch all users from the database
 const users = await orbDB.get(userModel.name);
 console.log('Users:', users);
@@ -62,62 +120,17 @@ console.log('Users:', users);
 const updatedUser = { name: 'Blaze' };
 orbDB.update(userModel.name, 1, updatedUser);
 
-const dbData = await orbDB.get(userModel.name);
-const updatedUserData = dbData.find(user => user.id === 1);
-
 // Fetch updated users from the database
 const updatedUsers = await orbDB.get(userModel.name);
 console.log('Updated Users:', updatedUsers);
 
 // Example usage: Delete a user
 orbDB.delete(userModel.name, 1);
-
-const dbData = await orbDB.get(userModel.name);
-const deletedUserData = dbData.find(user => user.id === 1);
-
-
-```
-# Sqlite Adapter
-### How to use
-```
-const OrbDB = require('orb');
-const sqlite3 = require('sqlite3').verbose();
-const fs = require('fs').promises;
-const path = require('path');
-const adapterModule = require('orb/adapters/sqliteAdapter'); // Import the adapter class
-
-let orbDB;
-let sqliteAdapterInstance;
-const dbPath = path.join(__dirname, './db.sqlite3');
-
-sqliteAdapterInstance = new adapterModule(dbPath); // Create an instance of SQLiteAdapter
-await sqliteAdapterInstance.init(); // Initialize SQLite connection
-
-// Create the schema for the test table
-await sqliteAdapterInstance.createSchema('test_table', {
-   id: { type: 'integer' },
-   name: { type: 'string' },
-   isActive: { type: 'boolean' },
-});
-
-// Initialize OrbDB with the SQLite adapter instance
-orbDB = new OrbDB.Sql(sqliteAdapterInstance);
-
-// Add record 
-const newUser = { id: 1, name: 'John Doe', isActive: false };
-await orbDB.insert('test_table', newUser);
-
-// Update reord
-const updatedUser = { name: 'Blaze' };
-await orbDB.update('test_table', 1, updatedUser);
-
-// Delete record
-await orbDB.delete('test_table', 1);
 ```
 
 # Hashing data
 ### how to use:
-```
+```javascript
 const HashUtility = require("orbdb/utils/hash");
 
 const sampleData = "Data to be hashed";
@@ -133,19 +146,65 @@ if(isMatch){
 # Sanitizing Data
 
 ```
-Added data sanitization. special characters from input data will now be striped and only clean data is stored in the database
-making sure your system is secure and data integrity is intact 
+Added data sanitization. Special characters from input data will now be stripped, and only clean data is stored in the database,
+making sure your system is secure and data integrity is intact.
 ```
+
+### How to use:
+
+Data sanitization is automatically applied when you insert or update data in the database. You don't need to call any specific function. The system automatically cleans the data before storing it.
+
+Example:
+
+```javascript
+const OrbDB = require('orbdb');
+const OrbDBSchema = require('orbdb/schema');
+const adapter = require('orbdb/adapters/jsonAdapter');
+const path = require('path');
+
+// Initialize JSON Adapter
+const dbPath = path.join(__dirname, 'db.json');
+const jsonAdapter = new adapter(dbPath);
+const orbDB = new OrbDB.Json(jsonAdapter);
+const schemaInstance = new OrbDBSchema(orbDB);
+
+// Define a model
+const userModel = {
+    name: 'users',
+    fields: {
+        id: { type: 'number', required: true },
+        name: { type: 'string', required: true },
+        age: { type: 'number' }
+    }
+};
+
+async function initialize() {
+    // Add the model and create the schema
+    schemaInstance.addModel(userModel);
+    await schemaInstance.createSchema();
+
+    // Insert data with special characters
+    const newUser = { name: 'John!@#$ Doe', age: 30 };
+    await orbDB.insert(userModel.name, newUser);
+
+    // Retrieve data
+    const users = await orbDB.get(userModel.name);
+    console.log('Users:', users); // The name will be stored as "John Doe" without special characters
+}
+
+initialize();
+```
+
 ### Adaptors:
 ```
-Now json and sqlite adapters are fully functional and ready for use
+Now json adapter is fully functional and ready for use
 ```
 # Why OrbDB?
 
 Here are the advantages of using **OrbDB**, based on its features and design principles:
 
-### 1. **JSON and SQLite Adapter Support**  
-   OrbDB allows developers to choose between lightweight JSON-based storage or robust SQLite databases, offering flexibility for various project requirements.
+### 1. **JSON Adapter Support**  
+   OrbDB uses lightweight JSON-based storage, offering flexibility for various project requirements.
 
 ### 2. **Dynamic Schema Management**  
    - OrbDB provides dynamic schema creation, making it easier to define and manage models directly within your application.  
@@ -168,7 +227,7 @@ Here are the advantages of using **OrbDB**, based on its features and design pri
    - Designed to work seamlessly across operating systems, including Linux, Windows, and MacOS.
 
 ### 8. **Lightweight and Scalable**  
-   - OrbDB is ideal for small to medium-sized applications and can scale effectively by switching between adapters.
+   - OrbDB is ideal for small to medium-sized applications and can scale effectively.
 
 ### 9. **Easy Integration**  
    - With a modular design, OrbDB can be integrated into existing applications with minimal effort.  

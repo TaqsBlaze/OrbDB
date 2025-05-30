@@ -1,0 +1,16 @@
+{
+  "schema": {
+    "properties": {
+      "id": {
+        "type": "number"
+      },
+      "name": {
+        "type": "string"
+      },
+      "age": {
+        "type": "number"
+      }
+    },
+    "User": []
+  }
+}
