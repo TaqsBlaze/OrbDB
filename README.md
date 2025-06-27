@@ -23,7 +23,10 @@ const dbPath = path.join(__dirname, 'db.json');
 const jsonAdapter = new JSONAdapter(dbPath);
 const orbDB = new OrbDB.Json(jsonAdapter);
 const schemaInstance = new OrbDBSchema(orbDB);
+import { fileURLToPath } from 'url';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 // Define a model
 const userModel = {
     name: 'users',
