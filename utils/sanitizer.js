@@ -55,4 +55,4 @@ function sanitizeInput(model, inputData) {
   return sanitizedData;
 }
 
-module.exports = { sanitizeInput };
+export { sanitizeInput };

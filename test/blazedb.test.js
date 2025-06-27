@@ -1,11 +1,9 @@
-//Updated
-const OrbDB = require('../orb'); 
-const OrbDBSchema = require('../schema/schema');
-const fs = require('fs').promises;
-const path = require('path');
+import OrbDB from '../orb.js';
+import OrbDBSchema from '../schema/schema.js';
+import fs from 'fs/promises';
+import path from 'path';
+import adapter from '../adapters/jsonAdapter.js';
 
-// Define JSON Adapter
-const adapter = require('../adapters/jsonAdapter');
 const dbPath = path.join(__dirname, './db.json');
 const userModel = {
   name: 'User',

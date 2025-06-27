@@ -67,4 +67,4 @@ class OrbDB {
   static Sql = Sql;
 }
 
-module.exports =  OrbDB;
+export default OrbDB;

@@ -1,4 +1,4 @@
-const OrbDB = require("../orb"); // Consider removing if using dependency injection
+import OrbDB from '../orb.js'; // Consider removing if using dependency injection
 
 class OrbDBSchema {
     constructor(flameDBInstance) {
@@ -59,4 +59,4 @@ class OrbDBSchema {
     }
 }
 
-module.exports = OrbDBSchema;
+export default OrbDBSchema;

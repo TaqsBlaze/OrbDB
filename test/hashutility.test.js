@@ -1,4 +1,4 @@
-const HashUtility = require('../utils/hash');
+import HashUtility from '../utils/hash.js';
 
 describe('HashUtility', () => {
     const sampleData = 'securepassword123';

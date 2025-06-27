@@ -1,10 +1,14 @@
 {
   "name": "orbdb",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "OrbDB is highly flexible, fast, light weight ORM suitable for prototyping whilst giving the flexibility of easly updating your database schema on the go to suit project chages and the flexibility to use a database of your choice",
   "main": "orb.js",
+  "type": "module",
   "scripts": {
-    "test": "jest --coverage --detectOpenHandles"
+    "test": "jest",
+    "build": "tsc",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
   },
   "repository": {
     "type": "git",
@@ -35,7 +39,16 @@
     "./utils/sanitizer": "./utils/sanitizer.js"
   },
   "dependencies": {
-    "better-sqlite3": "^11.6.0",
     "jest": "^29.7.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@typescript-eslint/eslint-plugin": "^7.1.0",
+    "@typescript-eslint/parser": "^7.1.0",
+    "eslint": "^8.57.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.3.3",
+    "mocha": "^10.8.2"
   }
 }

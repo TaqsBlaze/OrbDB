@@ -13,14 +13,14 @@
 ### JSON Adapter Example
 
 ```javascript
-const OrbDB = require('orbdb');
-const OrbDBSchema = require('orbdb/schema');
-const adapter = require('orbdb/adapters/jsonAdapter');
-const path = require('path');
+import OrbDB from 'orbdb';
+import OrbDBSchema from 'orbdb/schema';
+import JSONAdapter from 'orbdb/adapters/jsonAdapter';
+import path from 'path';
 
 // Initialize JSON Adapter
 const dbPath = path.join(__dirname, 'db.json');
-const jsonAdapter = new adapter(dbPath);
+const jsonAdapter = new JSONAdapter(dbPath);
 const orbDB = new OrbDB.Json(jsonAdapter);
 const schemaInstance = new OrbDBSchema(orbDB);
 
@@ -66,69 +66,10 @@ async function initialize() {
 initialize();
 ```
 
-
-## json Adapter
-
-### How to us
-
-```javascript
-const OrbDB = require('orbdb'); 
-const OrbDBSchema = require('orbdb/schema');
-const path = require('path');
-
-// Define JSON Adapter
-const adapter = require('orbdb/adapters/jsonAdapter');
-const dbPath = path.join(__dirname, './db.json');
-
-let orbDB;
-
-orbDB = new OrbDB.Json(new adapter(dbPath));
-const schemaInstance = new OrbDBSchema(orbDB);
-
-// Define your model here
-const userModel = {
-  name: 'User',
-  fields: {
-  id: { type: 'number', required: true },
-  name: { type: 'string', required: true },
-  age: { type: 'number', required: false }
-  }
-};
-
-
-let init = ( async () => {
-    // initialize database
-    schemaInstance.addModel(userModel);
-    await schemaInstance.createSchema();
-})
-
-init();
- 
-
-// Example usage: Add a user
-const newUser = { id: 1, name: 'John Doe', age: 30 };
-orbDB.insert(userModel.name, newUser);
-
-// Fetch all users from the database
-const users = await orbDB.get(userModel.name);
-console.log('Users:', users);
-
-// Example usage: Update a user
-const updatedUser = { name: 'Blaze' };
-orbDB.update(userModel.name, 1, updatedUser);
-
-// Fetch updated users from the database
-const updatedUsers = await orbDB.get(userModel.name);
-console.log('Updated Users:', updatedUsers);
-
-// Example usage: Delete a user
-orbDB.delete(userModel.name, 1);
-```
-
 # Hashing data
-### how to use:
+### How to use:
 ```javascript
-const HashUtility = require("orbdb/utils/hash");
+import HashUtility from "orbdb/utils/hash";
 
 const sampleData = "Data to be hashed";
 const hash = HashUtility.hash(sampleData);
@@ -136,7 +77,6 @@ const isMatch = HashUtility.verify(sampleData, hash);
 
 if(isMatch){
    console.log("Hash match");
-
 }
 ```
 
@@ -154,14 +94,14 @@ Data sanitization is automatically applied when you insert or update data in the
 Example:
 
 ```javascript
-const OrbDB = require('orbdb');
-const OrbDBSchema = require('orbdb/schema');
-const adapter = require('orbdb/adapters/jsonAdapter');
-const path = require('path');
+import OrbDB from 'orbdb';
+import OrbDBSchema from 'orbdb/schema';
+import JSONAdapter from 'orbdb/adapters/jsonAdapter';
+import path from 'path';
 
 // Initialize JSON Adapter
 const dbPath = path.join(__dirname, 'db.json');
-const jsonAdapter = new adapter(dbPath);
+const jsonAdapter = new JSONAdapter(dbPath);
 const orbDB = new OrbDB.Json(jsonAdapter);
 const schemaInstance = new OrbDBSchema(orbDB);
 
@@ -196,6 +136,7 @@ initialize();
 ```
 Now json adapter is fully functional and ready for use
 ```
+
 # Why OrbDB?
 
 Here are the advantages of using **OrbDB**, based on its features and design principles:

@@ -28,4 +28,4 @@ class HashUtility {
     }
 }
 
-module.exports = HashUtility;
+export default HashUtility;

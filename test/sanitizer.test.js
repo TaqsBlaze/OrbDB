@@ -1,4 +1,4 @@
-const { sanitizeInput } = require('../utils/sanitizer');
+import { sanitizeInput } from '../utils/sanitizer.js';
 
 describe('sanitizeInput', () => {
     const userModel = {
@@ -20,7 +20,6 @@ describe('sanitizeInput', () => {
         };
 
         const sanitizedData = sanitizeInput(userModel, inputData);
-        console.log("<<<<SANI>>>>", sanitizedData)
         expect(sanitizedData).toEqual({
             id: 1,
             name: 'John Doe',
